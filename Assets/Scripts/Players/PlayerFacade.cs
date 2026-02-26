@@ -14,9 +14,4 @@ public class PlayerFacade : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    public Vector2 GetInput()
-    {
-        return inputManager.GetMoveInput();
-    }
 }

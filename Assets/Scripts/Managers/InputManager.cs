@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    private List<InputAction> allActions;               // 액션들 리스트
     private DuckovInputActions inputActions;            // 인풋 시스템
     private InputAction moveAction;                     // 이동 액션
     private InputAction runAction;                      // 달리기 액션
@@ -10,19 +12,57 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
+        // 초기화
+        allActions = new List<InputAction>();
         inputActions = new DuckovInputActions();
         moveAction = inputActions.Player.Move;
+        allActions.Add(moveAction);
         runAction = inputActions.Player.Run;
+        allActions.Add(runAction);
         rollAction = inputActions.Player.Roll;
+        allActions.Add(rollAction);
     }
 
-    private void OnEnable() => inputActions.Player.Enable();
-
-    private void OnDisable() => inputActions.Player.Disable();
-
-    // 이동 입력 반환 함수
-    public Vector2 GetMoveInput()
+    private void OnEnable()
     {
-        return moveAction.ReadValue<Vector2>();
+        // 입력 이벤트 가능
+        inputActions.Player.Enable();
+
+        // 이벤트 수만큼
+        foreach (var action in allActions)
+        {
+            // 키 눌렀을 때
+            action.performed += ChangeInputAction;
+            // 키에서 손을 뗄 때
+            action.canceled += ChangeInputAction;
+        }
+    }
+
+    private void OnDisable()
+    {
+        // 이벤트 수만큼
+        foreach (var action in allActions)
+        {
+            // 키 눌렀을 때
+            action.performed -= ChangeInputAction;
+            // 키에서 손을 뗄 때
+            action.canceled -= ChangeInputAction;
+        }
+
+        // 입력 이벤트 불가능
+        inputActions.Player.Disable();
+    }
+
+    // 입력 이벤트 변경 함수
+    public void ChangeInputAction(InputAction.CallbackContext context)
+    {
+        // 이동 이벤트
+        if (context.action == moveAction)
+            EventBus<MoveEvent>.Publish(new MoveEvent { moveInput = context.ReadValue<Vector2>() });
+        // 달리기 이벤트
+        else if (context.action == runAction)
+            EventBus<RunEvent>.Publish(new RunEvent { isPressed = context.ReadValueAsButton() });
+        else
+            Debug.Log("없는 입력 이벤트");
     }
 }
