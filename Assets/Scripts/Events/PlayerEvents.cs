@@ -10,6 +10,11 @@ public struct RunEvent : IEvent
     public bool isPressed;
 }
 
+public struct MousePosEvent : IEvent
+{
+    public Vector2 mousePos;
+}
+
 public struct RollEvent : IEvent
 {
     public bool isPressed;

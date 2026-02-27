@@ -206,7 +206,7 @@ public partial class @DuckovInputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""MousePosition"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""10b277aa-d8bb-4800-ac0f-f44e6fa702f7"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -218,7 +218,7 @@ public partial class @DuckovInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""33fab5a8-a48d-4c3b-975f-aea0d0166d5b"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

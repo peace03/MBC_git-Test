@@ -14,4 +14,10 @@ public class PlayerFacade : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
+    // 마우스 위치 반환 함수
+    public Vector2 GetMousePosition()
+    {
+        return inputManager.CurMousePos;
+    }
 }
